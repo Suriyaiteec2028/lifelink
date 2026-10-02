@@ -1,0 +1,22 @@
+{
+  "name": "lifelink",
+  "version": "1.0.0",
+  "description": "LifeLink – Location-Based Blood Donor and Blood Request Management Portal",
+  "scripts": {
+    "start:backend": "npm --prefix backend start",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test": "npm --prefix backend test",
+    "seed": "npm --prefix backend run seed",
+    "build": "npm --prefix frontend run build"
+  },
+  "keywords": [
+    "blood-donation",
+    "lifelink",
+    "geofence",
+    "haversine",
+    "emergency-healthcare"
+  ],
+  "author": "LifeLink Engineering",
+  "license": "ISC"
+}

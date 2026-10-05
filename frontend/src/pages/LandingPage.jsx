@@ -27,7 +27,7 @@ export const LandingPage = () => {
             </span>
             <div>
               <span className="font-extrabold text-xl tracking-tight text-slate-900">
-                Life<span className="text-red-600">Link</span>
+                Blood<span className="text-red-600">Donor</span>
               </span>
               <span className="hidden sm:inline-block ml-2 text-xs text-slate-500 font-medium border-l border-slate-200 pl-2">
                 Blood Donor & Request Portal
@@ -73,7 +73,7 @@ export const LandingPage = () => {
             </h1>
 
             <p className="mt-6 text-lg text-slate-600 leading-relaxed">
-              LifeLink matches blood requests with eligible, active blood donors based on exact geographical distance, red-blood-cell compatibility, and a safe 6-month cooldown waiting period.
+              BloodDonor matches blood requests with eligible, active blood donors based on exact geographical distance, red-blood-cell compatibility, and a safe 6-month cooldown waiting period.
             </p>
 
             {/* Quick Actions */}
@@ -169,10 +169,10 @@ export const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-base">🩸</span>
-            <span className="font-bold text-white text-sm">LifeLink Blood Donor & Blood Request Portal</span>
+            <span className="font-bold text-white text-sm">BloodDonor – Blood Donor & Blood Request Portal</span>
           </div>
           <div>
-            &copy; 2026 LifeLink Portal &bull; Standalone Architecture Ready for Hospital Attendance Integration
+            &copy; 2026 BloodDonor Portal &bull; Standalone Architecture Ready for Hospital Attendance Integration
           </div>
         </div>
       </footer>

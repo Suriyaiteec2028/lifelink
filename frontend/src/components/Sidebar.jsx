@@ -69,7 +69,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
             <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-red-600 text-white font-black text-base shadow-sm shadow-red-200">
               🩸
             </span>
-            <span className="font-extrabold text-lg text-slate-900 tracking-tight">Life<span className="text-red-600">Link</span></span>
+            <span className="font-extrabold text-lg text-slate-900 tracking-tight">Blood<span className="text-red-600">Donor</span></span>
           </div>
 
           <button

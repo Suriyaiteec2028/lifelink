@@ -45,7 +45,7 @@ export const LoginPage = () => {
             🩸
           </span>
           <span className="font-extrabold text-2xl tracking-tight text-slate-900">
-            Life<span className="text-red-600">Link</span>
+            Blood<span className="text-red-600">Donor</span>
           </span>
         </Link>
         <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Sign in to your account</h2>
@@ -133,7 +133,7 @@ export const LoginPage = () => {
               ) : (
                 <>
                   <LogIn className="w-4 h-4" />
-                  <span>Login to LifeLink</span>
+                  <span>Login to BloodDonor</span>
                 </>
               )}
             </button>

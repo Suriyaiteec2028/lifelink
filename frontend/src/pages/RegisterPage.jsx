@@ -135,7 +135,7 @@ export const RegisterPage = () => {
               🩸
             </span>
             <span className="font-extrabold text-2xl tracking-tight text-slate-900">
-              Life<span className="text-red-600">Link</span>
+              Blood<span className="text-red-600">Donor</span>
             </span>
           </Link>
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">Donor & Requester Registration</h2>

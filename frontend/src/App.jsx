@@ -33,7 +33,7 @@ const ProtectedRoute = ({ children }) => {
           <div className="w-12 h-12 rounded-2xl bg-red-600 text-white font-black text-2xl flex items-center justify-center mx-auto mb-3 animate-bounce">
             🩸
           </div>
-          <p className="text-xs font-semibold text-slate-500">Loading LifeLink Portal...</p>
+          <p className="text-xs font-semibold text-slate-500">Loading BloodDonor Portal...</p>
         </div>
       </div>
     );

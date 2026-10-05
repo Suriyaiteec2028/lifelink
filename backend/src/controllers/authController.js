@@ -125,13 +125,18 @@ const sendRegistrationOTP = async (req, res) => {
     });
 
     // 7. Send Email
-    await sendRegistrationOTPEmail(normalizedEmail, otp, fullName);
+    const emailResult = await sendRegistrationOTPEmail(normalizedEmail, otp, fullName);
+    if (emailResult && emailResult.success === false) {
+      return res.status(500).json({
+        success: false,
+        message: `Failed to deliver verification email to ${normalizedEmail}: ${emailResult.error || 'SMTP delivery error'}`
+      });
+    }
 
     return res.status(200).json({
       success: true,
       message: `A 6-digit verification code has been sent to ${normalizedEmail}. It is valid for 5 minutes.`,
       email: normalizedEmail,
-      // Provide devOtp when not in production for easy automated testing & review
       devOtp: process.env.NODE_ENV === 'production' ? undefined : otp
     });
   } catch (error) {
@@ -370,7 +375,13 @@ const forgotPassword = async (req, res) => {
       expiresAt
     });
 
-    await sendPasswordResetOTPEmail(normalizedEmail, otp, user.fullName);
+    const emailResult = await sendPasswordResetOTPEmail(normalizedEmail, otp, user.fullName);
+    if (emailResult && emailResult.success === false) {
+      return res.status(500).json({
+        success: false,
+        message: `Failed to deliver password reset email to ${normalizedEmail}: ${emailResult.error || 'SMTP delivery error'}`
+      });
+    }
 
     return res.status(200).json({
       success: true,

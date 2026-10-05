@@ -47,8 +47,8 @@ export const Navbar = ({ onToggleSidebar }) => {
                 🩸
               </span>
               <div className="hidden sm:block">
-                <span className="font-extrabold text-lg tracking-tight text-slate-900">Life<span className="text-red-600">Link</span></span>
-                <span className="block text-[10px] text-slate-400 font-medium -mt-1 tracking-wider uppercase">Blood Portal</span>
+                <span className="font-extrabold text-lg tracking-tight text-slate-900">Blood<span className="text-red-600">Donor</span></span>
+                <span className="block text-[10px] text-slate-400 font-medium -mt-1 tracking-wider uppercase">LifeLink Portal</span>
               </div>
             </Link>
           </div>

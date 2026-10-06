@@ -90,7 +90,7 @@ export const LocationPicker = ({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <label className="block text-sm font-medium text-slate-700">
           {label} {required && <span className="text-red-600">*</span>}
         </label>

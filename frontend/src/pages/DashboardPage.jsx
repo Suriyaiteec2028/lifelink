@@ -125,25 +125,25 @@ export const DashboardPage = () => {
       )}
 
       {/* Dashboard Overview Cards (Section 6 Requirements) */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* 1. Blood Group */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">My Blood Group</span>
-            <div className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center font-bold">
+            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">My Blood Group</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center font-bold text-sm">
               🩸
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-red-600">{user?.bloodGroup}</span>
-            <span className="text-xs text-slate-400">RBC Donor</span>
+            <span className="text-2xl sm:text-3xl font-black text-red-600">{user?.bloodGroup}</span>
+            <span className="text-[11px] sm:text-xs text-slate-400">RBC Donor</span>
           </div>
         </div>
 
         {/* 2. Donor Availability Status */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Availability</span>
+            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Availability</span>
             <Link to="/availability" className="text-[11px] font-semibold text-red-600 hover:underline">
               Manage
             </Link>
@@ -151,77 +151,77 @@ export const DashboardPage = () => {
           <div className="mt-3">
             <StatusBadge status={user?.donorStatus || 'Active'} />
           </div>
-          <p className="mt-2 text-[11px] text-slate-400">
+          <p className="mt-2 text-[10px] sm:text-[11px] text-slate-400">
             {user?.donorStatus === 'Active' ? 'Receiving urgent request alerts' : 'Temporarily paused'}
           </p>
         </div>
 
         {/* 3. Total Donations */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Donations</span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Donations</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900">{user?.totalDonations || 0}</span>
-            <span className="text-xs text-slate-400">contributions</span>
+            <span className="text-2xl sm:text-3xl font-black text-slate-900">{user?.totalDonations || 0}</span>
+            <span className="text-[11px] sm:text-xs text-slate-400">contributions</span>
           </div>
-          <p className="mt-1 text-[11px] text-slate-400 truncate">Last: {formatDate(user?.lastDonationDate)}</p>
+          <p className="mt-1 text-[10px] sm:text-[11px] text-slate-400 truncate">Last: {formatDate(user?.lastDonationDate)}</p>
         </div>
 
         {/* 4. Next Eligible Date */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Next Eligible Date</span>
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Next Eligible Date</span>
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
               <Calendar className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <span className="text-base sm:text-lg font-bold text-slate-900">
+            <span className="text-sm sm:text-lg font-bold text-slate-900">
               {user?.nextEligibleDate ? formatDate(user?.nextEligibleDate) : 'Eligible Now'}
             </span>
           </div>
-          <p className="mt-1 text-[11px] text-slate-400">
+          <p className="mt-1 text-[10px] sm:text-[11px] text-slate-400">
             {user?.nextEligibleDate ? '6-month wait period' : 'Safe to donate'}
           </p>
         </div>
 
         {/* 5. Total Requests */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Blood Requests</span>
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Requests</span>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-slate-900">{stats.totalRequests}</span>
-            <span className="text-xs text-slate-400">initiated</span>
+            <span className="text-2xl sm:text-3xl font-black text-slate-900">{stats.totalRequests}</span>
+            <span className="text-[11px] sm:text-xs text-slate-400">initiated</span>
           </div>
         </div>
 
         {/* 6. Accepted Requests */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Accepted / Matched</span>
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Accepted / Matched</span>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-emerald-600">{stats.acceptedRequests}</span>
-            <span className="text-xs text-slate-400">fulfilled</span>
+            <span className="text-2xl sm:text-3xl font-black text-emerald-600">{stats.acceptedRequests}</span>
+            <span className="text-[11px] sm:text-xs text-slate-400">fulfilled</span>
           </div>
         </div>
 
         {/* 7. Pending Requests */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pending Requests</span>
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Pending Requests</span>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-blue-600">{stats.pendingRequests}</span>
-            <span className="text-xs text-slate-400">searching</span>
+            <span className="text-2xl sm:text-3xl font-black text-blue-600">{stats.pendingRequests}</span>
+            <span className="text-[11px] sm:text-xs text-slate-400">searching</span>
           </div>
         </div>
 
         {/* 8. Pending Invitations */}
-        <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Incoming Invitations</span>
+        <div className="p-4 sm:p-5 bg-white rounded-2xl border border-slate-200 shadow-xs">
+          <span className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider">Incoming Invitations</span>
           <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-3xl font-black text-red-600">{stats.invitationsCount}</span>
-            <span className="text-xs text-slate-400">awaiting reply</span>
+            <span className="text-2xl sm:text-3xl font-black text-red-600">{stats.invitationsCount}</span>
+            <span className="text-[11px] sm:text-xs text-slate-400">awaiting</span>
           </div>
         </div>
       </div>

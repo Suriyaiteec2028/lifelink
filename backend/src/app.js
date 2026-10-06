@@ -13,7 +13,18 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (process.env.NODE_ENV === 'production' && process.env.CORS_ORIGIN) {
+      const allowed = process.env.CORS_ORIGIN.split(',').map((o) => o.trim());
+      if (allowed.includes('*') || allowed.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    }
+    // Allow all local network origins in development (LAN / mobile testing)
+    return callback(null, true);
+  },
   credentials: true
 }));
 

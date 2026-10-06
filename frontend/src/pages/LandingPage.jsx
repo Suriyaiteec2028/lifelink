@@ -45,15 +45,15 @@ export const LandingPage = () => {
             </button>
             <Link
               to="/login"
-              className="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition"
             >
               Sign In
             </Link>
             <Link
               to="/register"
-              className="px-4 py-2 text-sm font-semibold bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm shadow-red-200 transition"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-sm shadow-red-200 transition whitespace-nowrap"
             >
-              Register as Donor
+              <span>Register</span><span className="hidden sm:inline"> as Donor</span>
             </Link>
           </div>
         </div>

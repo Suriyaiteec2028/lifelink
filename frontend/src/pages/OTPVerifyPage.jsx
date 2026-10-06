@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { ShieldCheck, Mail, AlertCircle, Loader2, ArrowRight, RotateCw, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Mail, AlertCircle, Loader2, RotateCw, CheckCircle2 } from 'lucide-react';
 import { api } from '../api/apiClient';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,9 +10,8 @@ export const OTPVerifyPage = () => {
   const { loginWithToken } = useAuth();
 
   const emailParam = searchParams.get('email') || '';
-  const devOtpParam = searchParams.get('devOtp') || '';
 
-  const [otp, setOtp] = useState(devOtpParam || '');
+  const [otp, setOtp] = useState('');
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes (300s)
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
@@ -36,7 +35,7 @@ export const OTPVerifyPage = () => {
   const handleVerify = async (e) => {
     e.preventDefault();
     if (!otp || otp.length < 6) {
-      setError('Please enter the full 6-digit verification code.');
+      setError('Please enter the 6-digit verification code sent to your email.');
       return;
     }
 
@@ -60,14 +59,20 @@ export const OTPVerifyPage = () => {
   };
 
   const handleResend = async () => {
+    if (!emailParam) {
+      setError('No email address provided to resend code.');
+      return;
+    }
     try {
       setResending(true);
       setError(null);
-      // Request resend OTP
-      setSuccessMsg('A new OTP has been requested. Check your email inbox.');
+      setSuccessMsg(null);
+      const res = await api.resendOTP({ email: emailParam, purpose: 'REGISTRATION' });
+      setSuccessMsg(res.message || `A new OTP verification code has been sent to ${emailParam}. Check your inbox.`);
       setTimeLeft(300);
+      setOtp('');
     } catch (err) {
-      setError(err.message || 'Failed to resend OTP.');
+      setError(err.message || 'Failed to resend OTP. Please try again.');
     } finally {
       setResending(false);
     }
@@ -84,10 +89,14 @@ export const OTPVerifyPage = () => {
           <p className="mt-1 text-xs sm:text-sm text-slate-500">
             We sent a 6-digit verification code to
           </p>
-          <p className="font-bold text-sm text-slate-800 mt-0.5">{emailParam || 'your email'}</p>
+          <p className="font-bold text-sm text-slate-800 mt-0.5">{emailParam || 'your registered email'}</p>
         </div>
 
         <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+          <div className="mb-5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800">
+            <strong>Security Notice:</strong> The verification code is sent directly to your registered email address. Please check your inbox and spam folder.
+          </div>
+
           {error && (
             <div className="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-xs text-rose-800">
               <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
@@ -102,19 +111,6 @@ export const OTPVerifyPage = () => {
             </div>
           )}
 
-          {devOtpParam && (
-            <div className="mb-4 p-2.5 rounded-lg bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-center justify-between">
-              <span><strong>Dev Mode Code:</strong> <code className="font-mono font-bold text-blue-700">{devOtpParam}</code></span>
-              <button
-                type="button"
-                onClick={() => setOtp(devOtpParam)}
-                className="text-[11px] underline font-bold text-blue-600 hover:text-blue-800"
-              >
-                Auto-fill
-              </button>
-            </div>
-          )}
-
           <form onSubmit={handleVerify} className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-2 text-center">
@@ -125,10 +121,10 @@ export const OTPVerifyPage = () => {
                 maxLength={6}
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                placeholder="123456"
+                placeholder="••••••"
                 required
                 autoFocus
-                className="block w-full py-3 text-center text-2xl font-extrabold tracking-widest text-slate-900 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+                className="block w-full py-3 text-center text-2xl font-extrabold tracking-widest text-slate-900 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none placeholder:text-slate-300"
               />
             </div>
 

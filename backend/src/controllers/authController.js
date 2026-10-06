@@ -137,7 +137,7 @@ const sendRegistrationOTP = async (req, res) => {
       success: true,
       message: `A 6-digit verification code has been sent to ${normalizedEmail}. It is valid for 5 minutes.`,
       email: normalizedEmail,
-      devOtp: process.env.NODE_ENV === 'production' ? undefined : otp
+      devOtp: process.env.NODE_ENV === 'test' ? otp : undefined
     });
   } catch (error) {
     console.error('sendRegistrationOTP error:', error);
@@ -385,9 +385,9 @@ const forgotPassword = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Password reset OTP has been sent to ${normalizedEmail}.`,
+      message: `A 6-digit password reset code has been sent to ${normalizedEmail}. Please check your email inbox.`,
       email: normalizedEmail,
-      devOtp: process.env.NODE_ENV === 'production' ? undefined : otp
+      devOtp: process.env.NODE_ENV === 'test' ? otp : undefined
     });
   } catch (error) {
     console.error('forgotPassword error:', error);
@@ -523,11 +523,105 @@ const getMe = async (req, res) => {
   }
 };
 
+/**
+ * @desc Resend OTP for Registration or Forgot Password
+ * @route POST /api/auth/resend-otp
+ */
+const resendOTP = async (req, res) => {
+  try {
+    const { email, purpose = 'REGISTRATION' } = req.body;
+    if (!email) {
+      return res.status(400).json({ success: false, message: 'Email address is required.' });
+    }
+    const normalizedEmail = email.toLowerCase().trim();
+
+    if (purpose === 'REGISTRATION') {
+      const activeRecord = await OTPRecord.findOne({
+        email: normalizedEmail,
+        purpose: 'REGISTRATION',
+        isUsed: false
+      }).sort({ createdAt: -1 });
+
+      if (!activeRecord || !activeRecord.tempRegistrationData) {
+        return res.status(400).json({
+          success: false,
+          message: 'No pending registration found for this email. Please register again.'
+        });
+      }
+
+      const otp = generateSecureOTP();
+      const salt = await bcrypt.genSalt(10);
+      activeRecord.otpHash = await bcrypt.hash(otp, salt);
+      activeRecord.expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+      activeRecord.attemptCount = 0;
+      await activeRecord.save();
+
+      const fullName = activeRecord.tempRegistrationData.fullName || 'User';
+      const emailResult = await sendRegistrationOTPEmail(normalizedEmail, otp, fullName);
+      if (emailResult && emailResult.success === false) {
+        return res.status(500).json({
+          success: false,
+          message: `Failed to deliver email to ${normalizedEmail}: ${emailResult.error || 'SMTP delivery error'}`
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `A new 6-digit verification code has been sent to ${normalizedEmail}.`,
+        devOtp: process.env.NODE_ENV === 'test' ? otp : undefined
+      });
+    } else if (purpose === 'FORGOT_PASSWORD') {
+      const user = await User.findOne({ email: normalizedEmail });
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'No registered user found with this email.' });
+      }
+
+      const otp = generateSecureOTP();
+      const salt = await bcrypt.genSalt(10);
+      const otpHash = await bcrypt.hash(otp, salt);
+      const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+
+      await OTPRecord.updateMany(
+        { email: normalizedEmail, purpose: 'FORGOT_PASSWORD', isUsed: false },
+        { isUsed: true }
+      );
+
+      await OTPRecord.create({
+        email: normalizedEmail,
+        otpHash,
+        purpose: 'FORGOT_PASSWORD',
+        expiresAt
+      });
+
+      const emailResult = await sendPasswordResetOTPEmail(normalizedEmail, otp, user.fullName);
+      if (emailResult && emailResult.success === false) {
+        return res.status(500).json({
+          success: false,
+          message: `Failed to deliver email to ${normalizedEmail}: ${emailResult.error || 'SMTP delivery error'}`
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `A new password reset code has been sent to ${normalizedEmail}.`,
+        devOtp: process.env.NODE_ENV === 'test' ? otp : undefined
+      });
+    } else {
+      return res.status(400).json({ success: false, message: 'Invalid OTP purpose.' });
+    }
+  } catch (error) {
+    console.error('resendOTP error:', error);
+    return res.status(500).json({ success: false, message: 'Failed to resend OTP code.' });
+  }
+};
+
 module.exports = {
   sendRegistrationOTP,
   verifyRegistrationOTP,
   login,
   forgotPassword,
   resetPassword,
+  resendOTP,
   getMe
 };
+

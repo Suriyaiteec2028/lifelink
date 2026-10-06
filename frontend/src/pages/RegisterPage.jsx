@@ -115,8 +115,8 @@ export const RegisterPage = () => {
       const res = await api.sendRegistrationOTP(payload);
 
       if (res.success) {
-        // Navigate to OTP verification page with query parameters
-        navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}&devOtp=${res.devOtp || ''}`);
+        // Navigate to OTP verification page with only the email parameter
+        navigate(`/verify-otp?email=${encodeURIComponent(formData.email.trim())}`);
       }
     } catch (err) {
       setError(err.message || 'Registration failed. Please verify your details.');

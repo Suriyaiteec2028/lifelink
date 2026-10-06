@@ -6,12 +6,14 @@ const {
   login,
   forgotPassword,
   resetPassword,
+  resendOTP,
   getMe
 } = require('../controllers/authController');
 const { protect } = require('../middleware/auth');
 const { otpLimiter } = require('../middleware/rateLimiter');
 
 router.post('/send-otp', otpLimiter, sendRegistrationOTP);
+router.post('/resend-otp', otpLimiter, resendOTP);
 router.post('/verify-otp', verifyRegistrationOTP);
 router.post('/login', login);
 router.post('/forgot-password', otpLimiter, forgotPassword);
